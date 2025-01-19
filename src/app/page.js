@@ -1,95 +1,68 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import React, { useState } from "react";
+import LoginModal from "./components/LoginModal";
+import EvaluateModal from "./components/EvaluateModal";
+import ReportModal from "./components/ReportModal";
 
-export default function Home() {
+const App = () => {
+  const [isLoginOpen, setLoginOpen] = useState(false);
+  const [isEvaluateOpen, setEvaluateOpen] = useState(false);
+  const [isReportOpen, setReportOpen] = useState(false);
+
+  const handleLogin = () => {
+    setLoginOpen(false);
+    setEvaluateOpen(true);
+  };
+
+  const handleCheckForBias = () => {
+    console.log("Transitioning to ReportModal");
+    setEvaluateOpen(false);
+    setReportOpen(true);
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.js</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Your Essays, Our Impartiality</h1>
+      <button
+        style={styles.button}
+        onClick={() => setLoginOpen(true)}
+      >
+        Check for Bias
+      </button>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      {isLoginOpen && <LoginModal onLogin={handleLogin} onClose={() => setLoginOpen(false)} />}
+      {isEvaluateOpen && <EvaluateModal onClose={() => setEvaluateOpen(false)} onLogin={handleCheckForBias} />}
+      {isReportOpen && <ReportModal onLogin={handleLogin} onClose={() => setReportOpen(false)} />}
     </div>
   );
-}
+};
+
+const styles = {
+  container: {
+    backgroundColor: "#084c61",
+    color: "#fff",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
+    fontFamily: "Arial, sans-serif",
+  },
+  title: {
+    fontSize: "2rem",
+    marginBottom: "20px",
+  },
+  button: {
+    backgroundColor: "#ffcc00",
+    border: "none",
+    borderRadius: "10px",
+    padding: "15px 30px",
+    fontSize: "1rem",
+    fontWeight: "bold",
+    cursor: "pointer",
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+    transition: "all 0.3s ease",
+  },
+};
+
+export default App;
