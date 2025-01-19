@@ -8,16 +8,18 @@ const App = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isEvaluateOpen, setEvaluateOpen] = useState(false);
   const [isReportOpen, setReportOpen] = useState(false);
-
+  const [feedback, setFeedback] = useState("");
+  
   const handleLogin = () => {
     setLoginOpen(false);
     setEvaluateOpen(true);
   };
 
-  const handleCheckForBias = () => {
+  const handleCheckForBias = (feedbackData) => {
     console.log("Transitioning to ReportModal");
     setEvaluateOpen(false);
     setReportOpen(true);
+    setFeedback(feedbackData);
   };
 
   return (
@@ -31,8 +33,8 @@ const App = () => {
       </button>
 
       {isLoginOpen && <LoginModal onLogin={handleLogin} onClose={() => setLoginOpen(false)} />}
-      {isEvaluateOpen && <EvaluateModal onClose={() => setEvaluateOpen(false)} onLogin={handleCheckForBias} />}
-      {isReportOpen && <ReportModal onLogin={handleLogin} onClose={() => setReportOpen(false)} />}
+      {isEvaluateOpen && <EvaluateModal onClose={() => setEvaluateOpen(false)} onSubmit={handleCheckForBias} />}
+      {isReportOpen && <ReportModal feedback={feedback} onLogin={handleLogin} onClose={() => setReportOpen(false)} />}
     </div>
   );
 };
